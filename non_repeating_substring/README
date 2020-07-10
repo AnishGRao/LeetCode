@@ -1,0 +1,6 @@
+poorly optimized
+bad space complexity
+
+did this in 10 min--trying to get faster, but I need to keep up good practices while doing so
+
+could have gone a different route where I checked ascii values, and just made substring like that
