@@ -1,86 +1,53 @@
 #include <bits/stdc++.h>
 using namespace std;
-// FSM solution
-
-bool star_from_char(string s, string p);
-bool dot_from_char(string s, string p);
-bool char_from_dot(string s, string p);
-bool char_from_star(string s, string p);
-bool dot_from_star(string s, string p);
-bool dot_from_dot(string s, string p);
-bool star_from_dot();
-bool char_from_char(string s, string p);
-bool init_char(string s, string p);
-
-bool star_from_char(string s, string p) {}
-
-bool dot_from_char(string s, string p) {}
-
-bool char_from_dot(string s, string p) {}
-
-bool char_from_star(string s, string p) {}
-
-bool dot_from_star(string s, string p) {}
-
-bool star_from_dot(string s, string p) {}
-
-bool char_from_char(string s, string p);
-
-bool init_char(string s, string p)
+// recursive solution
+std::string::iterator A, B;
+void _next(std::string::iterator str, std::string::iterator match, bool & ans)
 {
-    if (s[0] != p[0])
-        return false;
-    else
+    if (ans)
+        return;
+
+    if (std::next(match) == B)
     {
-        switch (p[1])
-        {
-            case '*':
-                return star_from_char(s.substr(1), p.substr(1));
-                break;
-            case '.':
-                return dot_from_char(s.substr(1), p.substr(1));
-                break;
-            default:
-                return char_from_char(s.substr(1), p.substr(1));
-                break;
-        }
+        if (std::next(str) == A)
+            ans = true;
+        return;
+    }
+
+    if (std::next(str) == A)
+    {
+        if (*match == '*')
+            _next(str, match - 2, ans);
+        return;
+    }
+
+    if (*str == *match || *match == '.')
+    {
+        _next(str - 1, match - 1, ans);
+        return;
+    }
+
+    if (*match == '*')
+    {
+        if (*str == *(match - 1) || *(match - 1) == '.')
+            _next(str - 1, match, ans);
+        _next(str, match - 2, ans);
     }
 }
-
-bool init_dot(string s, string p)
-{
-    switch (p[1])
-    {
-        case '*':
-            return star_from_dot(s.substr(1), p.substr(1));
-            break;
-        case '.':
-            return dot_from_dot(s.substr(1), p.substr(1));
-            break;
-        default:
-            return char_from_dot(s.substr(1), p.substr(1));
-            break;
-    }
-}
-
-bool init_star(string s, string p) {}
 
 bool isMatch(string s, string p)
 {
-    reverse(s.begin(), s.end());
-    reverse(p.begin(), p.end());
-    switch (p[0])
-    {
-        case '*':
-            return init_star(s, p);
-            break;
-        case '.':
-            return init_dot(s, p);
-            break;
-        default:
-            return init_char(s, p);
-            break;
-    }
+    bool ans = false;
+    A = s.begin();
+    B = p.begin();
+    // TODO replace with begin
+    _next(s.end() - 1, p.end() - 1, ans);
+    return ans;
 }
 
-int main() {}
+int main()
+{
+    std::string j = isMatch("aaaabddd", "a*abbd*") ? "true" : "false";
+    std::cout << j;
+    return 0;
+}
