@@ -1,0 +1,16 @@
+#include <bits/stdc++.h>
+using namespace std;
+//[3, 2, -2, 5, -3]
+int large(std::vector<int> v){
+    std::map<int,int, std::greater<int>> lar;
+    
+    for (auto i : v)
+        lar[i<0 ? -1*i : i]++;
+    while(lar.begin()->second < 2)
+        lar.erase(lar.begin());
+    return lar.begin()->first;
+}
+
+int main(){
+    std::cout << large({3, 2, -2, 5, -3})<<"\n";
+}
